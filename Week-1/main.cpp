@@ -1,24 +1,36 @@
 #include <iostream>
-#include <vector>
-#include <cmath>
 using namespace std;
 
 
-int ROWS = 3;
-int COLUMNS = 3;
-
-
+#include <iostream>
+using namespace std;
+ 
+ 
 int main() {
-
-    int matrix[ROWS][COLUMNS] = {
-        {1, 2, 3}, {4, 5, 6}, {7, 8, 4}
-    };
-
-    for (int row = 0; row < ROWS; row++) {
-        for (int column = 0; column < COLUMNS; column++) {
-            cout << matrix[row][column] << " ";
-        } cout << endl;
+ 
+    unsigned short n, m; cin >> n >> m;
+    unsigned short a[n], b[m];
+    bool flag = true;
+    unsigned short x;
+   
+    for (unsigned short i = 0; i < n; i++) {
+        cin >> a[i];
     }
-
+    for (unsigned short i = 0; i < m; i++) {
+        cin >> b[i];
+    }
+    for (unsigned short i = 0; i < n; i++) {
+        for (unsigned short j = 0; j < m; j++) {
+            if (a[i] == b[j]) {
+                flag = false;
+                x = a[i];
+                break;
+            }
+        }
+ 
+    }
+ 
+    if (flag) { cout << "None"; }
+   
     return 0;
 }
