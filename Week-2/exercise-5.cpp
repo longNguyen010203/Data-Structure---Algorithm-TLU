@@ -1,25 +1,29 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
 
-
 /*
-    Biểu thức Modulo
+    Số may mắn
 */
 
 
-int main() {
-
-    unsigned int n, m; cin >> n >> m;
-    unsigned long long k = 1;
-
-    for (int i = 0; i < n; i++) {
-        k = k * 2;
+ 
+int main()
+{
+    unsigned long long n; cin >> n;
+    unsigned short du, count = 0;
+    while (n != 0) {
+        du = n % 10;
+        n = n / 10;
+        if (du == 4 || du == 7) {
+            count++;
+        }
     }
-    cout << k << endl;
-    // cout << m % k;
-    cout << 98765432 / 4;
+    if (count == 4 || count ==7) {
+        cout << "YES";
+    } else {
+        cout << "NO";
+    }
     
-
     return 0;
 }
