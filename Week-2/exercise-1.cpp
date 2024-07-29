@@ -3,41 +3,41 @@ using namespace std;
 
 
 /*
-    Đường đi hình S
+    Đường đi hình S ===> O(n^2)
 */
 
 
 int main() {
 
-    unsigned short n, m; cin >> n >> m;
-    bool flag = true;
-    string direc = "right";
+    unsigned short n, m; cin >> n >> m; // O(1)
+    bool flag = true; // O(1)
+    string direc = "right"; // O(1)
 
-    for (int i = 0; i < n; i++) {
-        if (flag) {
-            for (int j = 0; j < m; j++) {
-                cout << "#";
+    for (int i = 0; i < n; i++) { // O(n)
+        if (flag) { // O(1)
+            for (int j = 0; j < m; j++) { // O(n)
+                cout << "#"; // O(1)
             } 
-            cout << endl;
-            flag = false;
+            cout << endl; // O(1)
+            flag = false; // O(1)
         } else {
-            if (direc == "right") {
-                for (int k = 0; k < m-1; k++) {
-                    cout << ".";
+            if (direc == "right") { // O(1)
+                for (int k = 0; k < m-1; k++) { // O(n)
+                    cout << "."; // O(1)
                 } 
-                cout << "#";
-                direc = "left";
-            } else {
-                cout << "#";
-                for (int k = 0; k < m-1; k++) {
-                    cout << ".";
+                cout << "#"; // O(1)
+                direc = "left"; // O(1)
+            } else { 
+                cout << "#"; // O(1)
+                for (int k = 0; k < m-1 ; k++) { // O(n)
+                    cout << "."; // O(1)
                 } 
-                direc = "right";
+                direc = "right"; // O(1)
             }
-            cout << endl;
-            flag = true;
+            cout << endl; // O(1)
+            flag = true; // O(1)
         }
     }
 
-    return 0;
+    return 0; // O(1)
 }
