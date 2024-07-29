@@ -73,8 +73,8 @@ class AList {
                     list[j] = list[j - 1];
                 }
                 list[0] = value;
-                size++;
             } 
+            size++;
         } // ==> O(n)
 
         void removeLast() {
@@ -119,24 +119,24 @@ class AList {
 };
 
 
-// int main() {
-//     AList<int> myList(10);
-//     myList.addFirst(5);
-//     myList.addFirst(2);
-//     myList.addFirst(7);
+int main() {
+    AList<int> myList(10);
+    myList.addFirst(5);
+    myList.addFirst(2);
+    myList.addFirst(7);
 
-//     cout << "Size: " << myList.getSize() << endl;
-//     cout << "Sum: " << myList.getSum() << endl;
-//     cout << "Min: " << myList.getMin() << endl;
+    cout << "Size: " << myList.getSize() << endl;
+    cout << "Sum: " << myList.getSum() << endl;
+    cout << "Min: " << myList.getMin() << endl;
 
-//     cout << "Prime count: " << myList.countPrime() << endl;
+    cout << "Prime count: " << myList.countPrime() << endl;
 
-//     cout << "Even elements: ";
-//     myList.printEven();
-//     cout << endl;
+    cout << "Even elements: ";
+    myList.printEven();
+    cout << endl;
 
-//     myList.removeLast();
-//     cout << "Size after removing last: " << myList.getSize() << endl;
+    myList.removeLast();
+    cout << "Size after removing last: " << myList.getSize() << endl;
 
-//     return 0;
-// }
+    return 0;
+}
