@@ -1,14 +1,16 @@
-#include<iostream>
+#include <iostream>
+using namespace std;
 
-using namespace std ;
+
 
 template <class E> 
 struct Node{
     E data ; // Lưu giá trị của Node
     Node<E> *next ; // Lưu địa chỉ của Node kế
-
-    Node(E e = E() , Node<E> *l = 0):
-    data(e),next(l){}
+    
+    // Hàm tạo
+    Node(E e = E() , Node<E> *l = NULL)
+    : data(e), next(l) {}
 };
 
 template <class E> 
@@ -18,129 +20,119 @@ class Slist{
         int size ; // Số lượng Node hiện tại
 
     public:
-        Slist():head(NULL),size(0){}
+        Slist(): head(NULL), size(0) {}
         
-        int getSize() const{
-            return size ;
-        }
+        int getSize() const { return size; }
+        bool isEmpty() const{ return size == 0; }
 
-        bool isEmpty() const{
-            return size == 0;
-        }
-
-        // Thử tìm cách viết lại print theo vòng for
         void print() const {
             Node<E> * tmp = head; 
-
-            while(tmp != 0) {
-                cout << tmp -> data <<" ";
+            while (tmp != NULL) {
+                cout << tmp->data << " ";
                 tmp = tmp->next ; // Di chuyển sang node kế
             }
         }
 
-        E front() const {
-            return head->data;
-        }
-
-        E back() {
-            Node<E>* last = head->next;
-            for (int i = 1; i < size-1; i++) {
-                last = last->next;
+        Node<E> *& getLink(int index) {
+            if (index < 0 || index >=  size){
+                cout << "Lỗi index";
+                Node<E> *v = NULL;
+                return v->next; // Trỏ đến null
             }
-            return last->data;
+            if (index == 0) { return head; }
+            
+            Node<E>* tmp = head ;
+            for (int i = 0 ; i < index - 1 ; i++)
+                tmp = tmp-> next;
+            return tmp->next;
+        }// ==> Hàm này trả về contrỏ next của node đứng trc node có vị trí index
+         // ==> cũng chính là địa chỉ của node có vị trí index
+
+        E getElement(int index) { return getLink(index)->data; }
+        E front() const { return head->data; }
+        E back() { return getLink(size-1)->data; }
+
+        bool find(const E &value) {
+            Node<E>* tmp = head ;
+            while (tmp != NULL) {
+                if (tmp->data == value) {
+                    return true;
+                }
+                tmp = tmp-> next;
+            }
+            return false;
         }
 
         void addFirst(const E& value) {
-            Node<E> *v = new Node<E> (value); // Khởi tạo Node giá trị value
-            v->next = head ; // Trỏ v tới Node đầu tiên
-            head = v ;
+            Node<E> *v = new Node<E> (value);
+            v->next = head; // Trỏ v tới Node đầu tiên thông qua head
+            head = v; // trỏ head tới node v
             size++;
         }
 
         void addLast(const E& value) {
             Node<E> *v = new Node<E> (value);
             if (isEmpty()) { head = v; return; }
-            Node<E> *last = getlink(size-1);
+            Node<E> *& last = getLink(size-1);
             last->next = v;
             size++;
         }
 
-        void removeFirst() {
-            if (isEmpty() == true){
-                cout << "Danh sách không phần tử";
-                return ;
-            }
+        void add(int index, const E& value){
+            if (index < 0 || index > getSize()) { cout << "Out of Range"; return; }
+            if (index == 0) { addFirst(value); return; }
+            if (index == getSize()) { addLast(value); return; }
+            Node<E> *v = new Node<E> (value);
+            Node<E> *& l = getLink(index-1);
+            v->next = l->next; // Nối Node mới với node index
+            l->next = v;
+            size++;
+        }
 
-            Node<E> *v = head ; // Lưu địa chỉ node đầu tiên
-            head = head -> next ; 
-            delete v ;
+        void removeFirst() {
+            if (isEmpty()){ cout << "List is Empty"; return; }
+            Node<E> *tmp = head; // Lưu địa chỉ node đầu tiên
+            head = head->next; // head trỏ tới node thứ hai trong danh sách
+            delete tmp; // Giải phóng node đầu tiên
             size--;
         }
 
         void removeLast() {
-            if (isEmpty() == true){
-                cout << "Danh sách không phần tử";
-                return ;
-            }
-
-            Node<E> *tmp = getlink(size-1);
-            Node<E> *last = getlink(size-2);
+            if (isEmpty()){ cout << "List is Empty"; return; }
+            Node<E> *& tmp = getLink(size-1);
+            Node<E> *& last = getLink(size-2);
             last->next = NULL;
             delete tmp;
             size--;
         }
 
-        Node<E> *& getlink(int index) {
-            if (index < 0 || index >=  size){
-                cout << "Lỗi index";
-                Node<E> *v = new Node<E>();
-                return  v->next; // Trỏ đến null
-            }
-            if (index == 0)
-                return head;
-            
-            Node<E>* tmp = head ;
-            for (int i = 0 ; i < index - 1 ; i++)
-                tmp = tmp-> next;
-            return tmp->next;
-        }
-
-        E getElement(int index) {
-            return getlink(index)->data;
-        }
-
-        void add(int index, const E& value){
-            Node<E> *v = new Node<E> (value); // Khởi tạo Node 
-            Node<E> *& l = getlink(index) ; // lấy địa chỉ của Node thứ index
-            v -> next = l ; // Nối Node mới với node index
-            l = v ;
-            size++;
-        }
-
-        void add (int i, const E &data) {
-            if (i < 0 || i > getSize()) { cout << "Out of range"; return; }
-            if (i == 1) { addFirst(data); size++;}
-            else if (i == getSize()) { addLast(data); size++; } 
-            else {
-                Node<E> *v = new Node<E> (data);
-                Node<E>* e2 = getlink(i);
-                v->next = e2->next;
-                tmp->next = v;
-                size++;
-            }
-        }
-
         void remove(int index) {
-            Node<E> *&l = getlink(index);
+            if (isEmpty()){ cout << "List is Empty"; return; }
+            Node<E> *& l = getLink(index);
             Node<E> *tmp = l ; // Lưu địa chỉ Node xóa
             l = l->next; // Nối với Node sau
             delete tmp; // Giải phóng
             size--;
         }
 
+        void removeKey(const E &value) {
+            if (isEmpty()){ cout << "List is Empty"; return; }
+            if (!find(value)) { cout << "Element not Exists."; return; }
+            Node<E> *tmp = head;
+            for (int i = 0; i < size; i++) {
+                Node<E> *& l = getLink(i);
+                if (l->data == value) {
+                    Node<E> *tmp = l;
+                    l = l->next;
+                    delete tmp;
+                    size--;
+                }
+            }
+        }
+
         // Thay đổi giá trị phần tử tại index bằng value
         void replace(int index, const E&value) {
-            Node<E> *& l = getlink(index);
+            Node<E> *& l = getLink(index);
             l->data = value;
         }
 
@@ -157,18 +149,6 @@ class Slist{
                 }
                 tmp = tmp-> next;
             }
-        }
-
-        // Kiểm tra phần tử value có tồn tại trong danh sách
-        bool find(const E &value){
-            Node<E>* tmp = head ;
-            while (tmp != NULL) {
-                if (tmp->data == value) {
-                    return true;
-                }
-                tmp = tmp-> next;
-            }
-            return false;
         }
 
         // Tính tổng các phần tử trong danh sách
@@ -234,17 +214,35 @@ int main(){
     cout << endl;
     cout << s.getSum() << endl;
     cout << s.find(18) << endl;
-    s.addFirst(1025);
-    s.replaceKey(4, 2003);
+    s.addFirst(1111);
+    s.replaceKey(4, 2008);
     s.print();
     cout << endl;
     cout << s.front() << endl;
     cout << s.back() << endl;
-
     s.addLast(123);
     s.print();
     s.removeLast();
     cout << endl;
+    s.print();
+    cout << endl;
+    s.add(2, 2003);
+    s.print();
+    cout << endl << s.getSize() << endl;
+    s.removeFirst();
+    s.print();
+    cout << endl;
+    s.remove(2);
+    s.print();
+    cout << endl;
+    s.add(3, 345);
+    s.print();
+    cout << endl;
+    s.remove(3);
+    s.print();
+
+    cout << endl;
+    s.removeKey(2003);
     s.print();
     return 0 ;
 }
