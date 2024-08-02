@@ -73,9 +73,10 @@ class SList {
 
         // Thêm phần tử vào cuối danh sách
         void addLast(const E &data) {
-            Node<E>* newNode = new Node<E>(data);
             if (isEmpty()) { head = newNode; return; } 
+
             Node<E>* tmp = head;
+            Node<E>* newNode = new Node<E>(data);
             while (tmp->next != NULL) {
                 tmp = tmp->next;
             }
