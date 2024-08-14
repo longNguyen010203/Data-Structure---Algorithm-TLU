@@ -5,7 +5,6 @@ using namespace std;
 
 
 template <typename E>
-
 class AList {
     protected:
         int maxSize;
